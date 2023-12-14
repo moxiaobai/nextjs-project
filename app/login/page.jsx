@@ -13,6 +13,9 @@ export default function LoginTest() {
         const data = await getMemberTest()
         setVisible(false)
         console.log('getMemberTest', data)
+
+        localStorage.setItem('accessToken', data.accessToken)
+        localStorage.setItem('memberInfo', JSON.stringify(data.member))
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -20,9 +23,9 @@ export default function LoginTest() {
 
     fetchData()
 
-    return () => {
-      // 可选的清理逻辑，例如取消请求或清除定时器
-    }
+    setTimeout(function () {
+      window.close()
+    }, 300)
   }, []) // 传递空数组作为依赖项，以确保只在组件挂载时获取数据
 
   return (

@@ -9,13 +9,12 @@ export const Http = axios.create({
   timeout: 30000,
 })
 
-console.log("baseURL", process.env.NEXT_PUBLIC_BACKEND_URL)
-
 // 添加请求拦截器
 Http.interceptors.request.use(config => {
-  let timestamp = new Date().getTime().toString().substring(0, 10);
+  // config.headers['TOKEN'] = localStorage.getItem("accessToken")
 
   // 当前主机下的接口请求过滤
+  let timestamp = new Date().getTime().toString().substring(0, 10);
   config.data = encrypt(signFormat({ ...config.data }, timestamp))
 
   return config

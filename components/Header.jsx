@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   HomeOutlined,
   AppstoreOutlined,
@@ -17,25 +17,91 @@ import Link from 'next/link'
 import { getLoginUrl, logout } from '../api/member'
 
 async function onLogin(platform) {
-  const { data } = await getLoginUrl({ platform: platform })
-  window.open(data.value.loginUrl, '_blank', 'width=500,height=500')
+  const data = await getLoginUrl({ platform: platform })
+  console.log('data', data)
+  window.open(data.loginUrl, '_blank', 'width=500,height=500')
 }
 
 function onLoginTest() {
   window.open('/login', '_blank', 'width=500,height=500')
 }
 
-async function onLogout() {
-  await logout()
+function initMember() {
+  let member = {
+    name: '',
+    email: '',
+    picture: '',
+  }
+
+  const info = localStorage.getItem('memberInfo')
+  if (info !== '') {
+    const user = JSON.parse(info)
+    member.name = user.name
+    member.email = user.email
+    member.picture = user.picture
+  }
+
+  return member
 }
 
 export default function Header() {
-  const [current, setCurrent] = useState('home')
   const [visible, setVisible] = useState(true)
+  const [current, setCurrent] = useState('home')
+  const [member, setMember] = useState({})
+
   const onClick = (e) => {
     console.log('click ', e)
     setCurrent(e.key)
+
+    switch (e.key) {
+      case 'login':
+        onLogin('google')
+        break
+      case 'loginTest':
+        onLoginTest()
+        break
+      case 'logout':
+        onLogout()
+        break
+      default:
+        break
+    }
   }
+
+  useEffect(() => {
+    const member = initMember()
+    setMember(member)
+    if (member.name !== '') {
+      setVisible(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleStorage = () => {
+      if (localStorage.getItem('memberInfo')) {
+        const member = initMember()
+        setMember(member)
+        if (member.name !== '') {
+          setVisible(false)
+        }
+      }
+    }
+
+    window.addEventListener('storage', handleStorage)
+
+    return () => {
+      window.removeEventListener('storage', handleStorage)
+    }
+  }, [])
+
+  async function onLogout() {
+    await logout()
+
+    setVisible(true)
+    localStorage.setItem('accessToken', '')
+    localStorage.setItem('memberInfo', '')
+  }
+
   return (
     <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal">
       <Menu.Item key="home" icon={<HomeOutlined />}>
@@ -55,24 +121,19 @@ export default function Header() {
       )}
       {visible && (
         <Menu.Item key="loginTest" icon={<GoogleOutlined />}>
-          <Link href="/login">Login Test</Link>
+          Login Test
         </Menu.Item>
       )}
       {!visible && (
         <Menu.SubMenu
           key="user"
-          title={
-            <Avatar
-              shape="circle"
-              src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=1"
-            />
-          }
+          title={<Avatar shape="circle" src={member.picture} />}
         >
           <Menu.Item key="nickname" icon={<UserOutlined />}>
-            <Link href="/about">Moxiaobai</Link>
+            <Link href="/about">{member.name}</Link>
           </Menu.Item>
           <Menu.Item key="email" icon={<MailOutlined />}>
-            xiaogang@qq.com
+            {member.email}
           </Menu.Item>
           <Menu.Item key="order" icon={<BarsOutlined />}>
             <Link href="/order">订单</Link>
