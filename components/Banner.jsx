@@ -16,7 +16,6 @@ export default async function Banner() {
               backgroundImage: `url(${item.picture})`,
             }}
             className="p-20 rounded-3xl"
-            key={item.id}
           ></div>
         </div>
       ))}
