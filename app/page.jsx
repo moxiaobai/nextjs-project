@@ -1,4 +1,5 @@
 import Banner from '../components/Banner'
+import Checkout from '../components/Checkout'
 
 export default function Home() {
   return (
@@ -6,6 +7,8 @@ export default function Home() {
       <div className="mt-2">
         <Banner />
       </div>
+
+      <Checkout />
     </div>
   )
 }

@@ -34,7 +34,7 @@ function initMember() {
   }
 
   const info = localStorage.getItem('memberInfo')
-  if (info !== '') {
+  if (info) {
     const user = JSON.parse(info)
     member.name = user.name
     member.email = user.email

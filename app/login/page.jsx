@@ -26,7 +26,7 @@ export default function LoginTest() {
     setTimeout(function () {
       window.close()
     }, 300)
-  }, []) // 传递空数组作为依赖项，以确保只在组件挂载时获取数据
+  }, [])
 
   return (
     <Result

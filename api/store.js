@@ -11,7 +11,7 @@ export async function getCountry (data) {
       ...data
     }
   })
-  return res.rspdata || []
+  return res || []
 }
 
 
@@ -24,7 +24,7 @@ export async function getChannel (data) {
       ...data
     }
   })
-  return res.rspdata || []
+  return res || []
 }
 
 /*
@@ -38,5 +38,5 @@ export async function getGoods (data) {
       ...data
     }
   })
-  return res.rspdata || []
+  return res || []
 }
