@@ -14,7 +14,7 @@ import {
 } from '@ant-design/icons'
 import { Menu, Avatar } from 'antd'
 import Link from 'next/link'
-import { getLoginUrl, logout } from '../api/member'
+import { getLoginUrl, logout } from '@/api/member'
 
 async function onLogin(platform) {
   const data = await getLoginUrl({ platform: platform })

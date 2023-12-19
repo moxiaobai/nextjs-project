@@ -9,7 +9,7 @@ export async function order (data) {
             ...data
         }
     })
-    return res.rspdata
+    return res
 }
 
 /* 获取订单列表 */
@@ -21,7 +21,7 @@ export async function getRecord (data) {
             ...data
         }
     })
-    return res.rspdata
+    return res
 }
 
 /* 支付结果 */
@@ -33,5 +33,5 @@ export async function getResult (data) {
             ...data
         }
     })
-    return res.rspdata
+    return res
 }

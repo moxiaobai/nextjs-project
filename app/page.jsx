@@ -1,5 +1,5 @@
-import Banner from '../components/Banner'
-import Checkout from '../components/Checkout'
+import Banner from '@/components/Banner'
+import Checkout from '@/components/Checkout'
 
 export default function Home() {
   return (
