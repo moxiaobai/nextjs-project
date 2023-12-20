@@ -19,6 +19,7 @@ export default function Page() {
         const data = await getMemberInfo({
           platform: platform,
           code: decodeURIComponent(code),
+          site: 'next',
         })
         console.log('getMemberInfo', data)
         setVisible(false)
