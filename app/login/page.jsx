@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Button, Result } from 'antd'
+import { Result } from 'antd'
 import { getMemberTest } from '../../api/member'
 
 export default function LoginTest() {
@@ -28,16 +28,5 @@ export default function LoginTest() {
     }, 300)
   }, [])
 
-  return (
-    <Result
-      status="success"
-      title="Login Successfully!"
-      extra={[
-        <Button type="primary" key="console">
-          Go Console
-        </Button>,
-        <Button key="buy">Buy Again</Button>,
-      ]}
-    />
-  )
+  return <Result status="success" title="Login Successfully!" />
 }

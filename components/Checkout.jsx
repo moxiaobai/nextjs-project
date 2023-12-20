@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import { Divider, Col, Row, Card, Button, Modal } from 'antd'
+import React, { useState, useEffect, use } from 'react'
+import { Divider, Col, Row, Card, Button, Modal, Tooltip, Spin } from 'antd'
 import { getChannel, getGoods } from '@/api/store'
 import { order, getResult } from '@/api/checkout'
 
@@ -9,10 +9,15 @@ export default function Checkout() {
   const iso = 'US'
   const [channel, setChannel] = useState([])
   const [channelId, setChannelId] = useState(0)
+  const [loadingChannel, setLoadingChannel] = useState(true)
+
   const [goods, setGoods] = useState([])
   const [goodsId, setGoodsId] = useState(0)
+  const [loadingGoods, setLoadingGoods] = useState(true)
+
   const [paidInfo, setPaidInfo] = useState({ amount: 0, currency: '' })
-  const [isDisabledPay, setIsDisabledPay] = useState(false)
+  const [isDisabledPay, setIsDisabledPay] = useState(true)
+
   const [isShowResult, setIsShowResult] = useState(false)
   const [orderId, setOrderId] = useState('')
   const [resultMsg, setResultMsg] = useState('Recharging~~~~')
@@ -25,16 +30,32 @@ export default function Checkout() {
       let payChannel = []
       if ('channel' in data) {
         data.channel.forEach((item) => {
+          let tip = ''
+          switch (item.name) {
+            case 'paypal':
+              tip =
+                'Email: sb-pd6hr28292776@personal.example.com Password:Abcd123456'
+              break
+            case 'stripe':
+              tip =
+                'NUMBER: 4242424242424242  CVC: Any 3 digits  DATE: Any future date'
+              break
+            default:
+              break
+          }
+
           payChannel.push({
             id: item.id,
             channelId: item.channelId,
             name: item.name,
             pic: '/img/' + item.name + '.png',
+            tip: tip,
           })
         })
       }
 
       setChannel(payChannel)
+      setLoadingChannel(false)
 
       if (channelId == 0 && payChannel.length > 0) {
         setChannelId(payChannel[0].channelId)
@@ -48,13 +69,16 @@ export default function Checkout() {
   async function onSelectChannel(channel) {
     console.log('onSelectChannel', channel)
     setChannelId(channel.channelId)
-    setIsDisabledPay(false)
+    setLoadingGoods(true)
+    setIsDisabledPay(true)
 
     const data = await getGoods({
       iso: iso,
       id: channel.id,
     })
     setGoods(data)
+    setLoadingGoods(false)
+    setIsDisabledPay(false)
 
     if (data.length > 0) {
       setGoodsId(data[0].goodsId)
@@ -77,6 +101,7 @@ export default function Checkout() {
       goodsId: goodsId,
       channelId: channelId,
       quantity: 1,
+      site: 'next',
     }
     console.log('body', body)
 
@@ -109,6 +134,7 @@ export default function Checkout() {
 
   function onOk() {
     setIsShowResult(false)
+    setIsDisabledPay(false)
 
     if (resultIntervalId != 0) {
       clearInterval(resultIntervalId)
@@ -120,33 +146,42 @@ export default function Checkout() {
       <Divider orientation="left" plain>
         支付渠道
       </Divider>
-      <div className="flex flex-wrap">
-        <Row>
+      {loadingChannel && <Spin size="large" />}
+      {!loadingChannel && (
+        <Row gutter={16}>
           {channel.map((item) => (
             <Col span={12} className="p-2" key={item.name}>
-              <div
-                className={`border rounded-lg cursor-pointer ${
-                  channelId == item.channelId ? 'border-yellow-700' : ''
-                }`}
-              >
-                <img
-                  onClick={() => onSelectChannel(item)}
-                  alt={item.name}
-                  src={item.pic}
-                  className="bg-white rounded-lg"
-                />
-              </div>
+              <Tooltip title={item.tip}>
+                <div
+                  className={`border rounded-lg cursor-pointer ${
+                    channelId == item.channelId ? 'border-yellow-700' : ''
+                  }`}
+                >
+                  <img
+                    onClick={() => onSelectChannel(item)}
+                    alt={item.name}
+                    src={item.pic}
+                    className="bg-white rounded-lg"
+                  />
+                </div>
+              </Tooltip>
             </Col>
           ))}
         </Row>
-      </div>
+      )}
       <Divider orientation="left" plain>
         商品列表
       </Divider>
-      <div className="flex flex-wrap">
-        <Row>
+      {loadingGoods && <Spin size="large" />}
+      {!loadingGoods && (
+        <Row gutter={16}>
           {goods.map((item) => (
-            <Col span={12} className="p-2" key={item.goodsId}>
+            <Col
+              xl={{ span: 6 }}
+              md={{ span: 12 }}
+              className="p-2"
+              key={item.goodsId}
+            >
               <Card
                 onClick={() => onSelectGoods(item)}
                 title={item.goodsName}
@@ -164,7 +199,7 @@ export default function Checkout() {
             </Col>
           ))}
         </Row>
-      </div>
+      )}
       <Divider orientation="left" plain>
         支付详情
       </Divider>
@@ -178,7 +213,7 @@ export default function Checkout() {
           transition: 'opacity 0.5s',
         }}
       >
-        <Row>
+        <Row gutter={16}>
           <Col flex="auto">
             <p>
               总价: {paidInfo.currency} {paidInfo.amount}
@@ -191,6 +226,7 @@ export default function Checkout() {
               type="primary"
               size="large"
               onClick={onPay}
+              loading={isDisabledPay}
               disabled={isDisabledPay}
               className="ml-6"
             >

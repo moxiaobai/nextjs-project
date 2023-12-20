@@ -17,7 +17,7 @@ import Link from 'next/link'
 import { getLoginUrl, logout } from '@/api/member'
 
 async function onLogin(platform) {
-  const data = await getLoginUrl({ platform: platform })
+  const data = await getLoginUrl({ platform: platform, site: 'next' })
   console.log('data', data)
   window.open(data.loginUrl, '_blank', 'width=500,height=500')
 }
@@ -34,7 +34,7 @@ function initMember() {
   }
 
   const info = localStorage.getItem('memberInfo')
-  if (info) {
+  if (info && info !== 'undefined') {
     const user = JSON.parse(info)
     member.name = user.name
     member.email = user.email
@@ -108,7 +108,7 @@ export default function Header() {
         <Link href="/">Home</Link>
       </Menu.Item>
       <Menu.Item key="about" icon={<AppstoreOutlined />}>
-        <Link href="/about">About Me</Link>
+        <Link href="/about">About</Link>
       </Menu.Item>
       <Menu.SubMenu key="lang" icon={<GlobalOutlined />} title="Language">
         <Menu.Item key="zh">简体中文</Menu.Item>
