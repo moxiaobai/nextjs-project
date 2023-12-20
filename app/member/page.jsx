@@ -23,8 +23,10 @@ export default function Page() {
         console.log('getMemberInfo', data)
         setVisible(false)
 
-        localStorage.setItem('accessToken', data.accessToken)
-        localStorage.setItem('memberInfo', JSON.stringify(data.member))
+        if (data.hasOwnProperty('accessToken')) {
+          localStorage.setItem('accessToken', data.accessToken)
+          localStorage.setItem('memberInfo', JSON.stringify(data.member))
+        }
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -34,7 +36,7 @@ export default function Page() {
 
     setTimeout(function () {
       window.close()
-    }, 300)
+    }, 3000)
   }, [])
 
   return <Result status="success" title="Login Successfully!" />

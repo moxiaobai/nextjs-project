@@ -14,8 +14,10 @@ export default function LoginTest() {
         setVisible(false)
         console.log('getMemberTest', data)
 
-        localStorage.setItem('accessToken', data.accessToken)
-        localStorage.setItem('memberInfo', JSON.stringify(data.member))
+        if (data.hasOwnProperty('accessToken')) {
+          localStorage.setItem('accessToken', data.accessToken)
+          localStorage.setItem('memberInfo', JSON.stringify(data.member))
+        }
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -25,7 +27,7 @@ export default function LoginTest() {
 
     setTimeout(function () {
       window.close()
-    }, 300)
+    }, 3000)
   }, [])
 
   return <Result status="success" title="Login Successfully!" />
