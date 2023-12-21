@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { getRecord } from '@/api/checkout'
-import Banner from '@/components/Banner'
+import Banner from './../components/Banner'
 import { Table } from 'antd'
 import moment from 'moment'
 
@@ -49,7 +49,6 @@ export default function Page() {
       try {
         const data = await getRecord()
         console.log('getResult', data)
-        //遍历data, 并新增键值key
         data.forEach((item, index) => {
           item.key = item.id
         })

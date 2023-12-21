@@ -1,11 +1,14 @@
 'use client'
 
-import React, { useState, useEffect, use } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Divider, Col, Row, Card, Button, Modal, Tooltip, Spin } from 'antd'
 import { getChannel, getGoods } from '@/api/store'
 import { order, getResult } from '@/api/checkout'
+import { useTranslation } from '../../i18n/client'
 
-export default function Checkout() {
+export default function Checkout({ lng }) {
+  const { t } = useTranslation(lng)
+
   const iso = 'US'
   const [channel, setChannel] = useState([])
   const [channelId, setChannelId] = useState(0)
@@ -144,7 +147,7 @@ export default function Checkout() {
   return (
     <>
       <Divider orientation="left" plain>
-        支付渠道
+        {t('home.channel')}
       </Divider>
       {loadingChannel && <Spin size="large" />}
       {!loadingChannel && (
@@ -170,7 +173,7 @@ export default function Checkout() {
         </Row>
       )}
       <Divider orientation="left" plain>
-        商品列表
+        {t('home.goods')}
       </Divider>
       {loadingGoods && <Spin size="large" />}
       {!loadingGoods && (
@@ -201,7 +204,7 @@ export default function Checkout() {
         </Row>
       )}
       <Divider orientation="left" plain>
-        支付详情
+        {t('home.detail')}
       </Divider>
       <div
         className="flex m-3 p-4 border rounded-lg bg-white"
@@ -216,7 +219,7 @@ export default function Checkout() {
         <Row gutter={16}>
           <Col flex="auto">
             <p>
-              总价: {paidInfo.currency} {paidInfo.amount}
+              {t('home.price')}: {paidInfo.currency} {paidInfo.amount}
             </p>
             <p>This price does not include tax</p>
           </Col>
@@ -230,15 +233,22 @@ export default function Checkout() {
               disabled={isDisabledPay}
               className="ml-6"
             >
-              支付
+              {t('home.pay')}
             </Button>
           </Col>
         </Row>
       </div>
 
-      <Modal open={isShowResult} title="支付结果" onOk={onOk} onCancel={onOk}>
+      <Modal
+        open={isShowResult}
+        title={t('home.result')}
+        onOk={onOk}
+        onCancel={onOk}
+      >
         <p>{resultMsg}</p>
-        <p>订单号: {orderId}</p>
+        <p>
+          {t('home.orderId')}: {orderId}
+        </p>
       </Modal>
     </>
   )

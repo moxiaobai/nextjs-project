@@ -15,6 +15,8 @@ import {
 import { Menu, Avatar } from 'antd'
 import Link from 'next/link'
 import { getLoginUrl, logout } from '@/api/member'
+import { useTranslation } from '../../i18n/client'
+import { languages, locales } from '../../i18n/settings'
 
 async function onLogin(platform) {
   const data = await getLoginUrl({ platform: platform, site: 'next' })
@@ -44,7 +46,9 @@ function initMember() {
   return member
 }
 
-export default function Header() {
+export default function Header({ lng }) {
+  const { t } = useTranslation(lng)
+
   const [visible, setVisible] = useState(true)
   const [current, setCurrent] = useState('home')
   const [member, setMember] = useState({})
@@ -105,18 +109,23 @@ export default function Header() {
   return (
     <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal">
       <Menu.Item key="home" icon={<HomeOutlined />}>
-        <Link href="/">Home</Link>
+        <Link href={`/${lng}/`}>{t('header.home')}</Link>
       </Menu.Item>
       <Menu.Item key="about" icon={<AppstoreOutlined />}>
-        <Link href="/about">About</Link>
+        <Link href={`/${lng}/about`}>{t('header.about')}</Link>
       </Menu.Item>
-      <Menu.SubMenu key="lang" icon={<GlobalOutlined />} title="Language">
-        <Menu.Item key="zh">简体中文</Menu.Item>
-        <Menu.Item key="en">English</Menu.Item>
+      <Menu.SubMenu key="lang" icon={<GlobalOutlined />} title={locales[lng]}>
+        {languages
+          .filter((l) => lng !== l)
+          .map((l) => (
+            <Menu.Item key={l}>
+              <Link href={`/${l}`}>{locales[l]}</Link>
+            </Menu.Item>
+          ))}
       </Menu.SubMenu>
       {visible && (
         <Menu.Item key="login" icon={<GooglePlusOutlined />}>
-          Log in
+          {t('header.login')}
         </Menu.Item>
       )}
       {visible && (
@@ -130,16 +139,16 @@ export default function Header() {
           title={<Avatar shape="circle" src={member.picture} />}
         >
           <Menu.Item key="nickname" icon={<UserOutlined />}>
-            <Link href="/about">{member.name}</Link>
+            <Link href={`/${lng}/about`}>{member.name}</Link>
           </Menu.Item>
           <Menu.Item key="email" icon={<MailOutlined />}>
             {member.email}
           </Menu.Item>
           <Menu.Item key="order" icon={<BarsOutlined />}>
-            <Link href="/order">订单</Link>
+            <Link href={`/${lng}/order`}>{t('header.order')}</Link>
           </Menu.Item>
           <Menu.Item key="logout" icon={<LogoutOutlined />}>
-            Logout
+            {t('header.logout')}
           </Menu.Item>
         </Menu.SubMenu>
       )}

@@ -1,3 +1,5 @@
+'use client'
+
 export default function Footer() {
   return (
     <p className="text-center mt-2 mb-4">

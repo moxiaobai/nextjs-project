@@ -1,0 +1,22 @@
+{
+    "head": {
+        "title": "NextJs App 学习项目"
+    },
+    "header": {
+        "home": "首页",
+        "about": "关于我",
+        "lang": "语言",
+        "order": "订单",
+        "login": "登录",
+        "logout": "退出"
+    },
+    "home": {
+        "channel": "支付渠道",
+        "goods": "商品列表",
+        "detail": "支付详情",
+        "price": "总价",
+        "result": "支付结果",
+        "orderId": "订单号",
+        "pay": "支付"
+    }
+}

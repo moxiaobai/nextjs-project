@@ -1,0 +1,22 @@
+{
+    "head": {
+        "title": "NextJs App Study"
+    },
+    "header": {
+        "home": "Home",
+        "about": "About Me",
+        "lang": "Language",
+        "order": "Order",
+        "login": "Log in",
+        "logout": "Logout"
+    },
+    "home": {
+        "channel": "Payment Channels",
+        "goods": "Product List",
+        "detail": "Payment details",
+        "price": "Price",
+        "result": "Payment results",
+        "orderId": "Order No.",
+        "pay": "Pay"
+    }
+}

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Result, Button } from 'antd'
-import Banner from '@/components/Banner'
+import Banner from './../components/Banner'
 import { getResult } from '@/api/checkout'
 
 export default function Page() {
@@ -32,6 +32,10 @@ export default function Page() {
       }
     }
 
+    if (orderId === '' || platform === '' || transactionId === '') {
+      console.error('Missing orderId, platform, or transactionId')
+      return
+    }
     fetchData()
   }, [])
 

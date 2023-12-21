@@ -1,28 +1,18 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { Result } from 'antd'
-import { getMemberInfo } from '../../api/member'
+import { getMemberTest } from '../../../api/member'
 
-export default function Page() {
-  const searchParams = useSearchParams()
-  const code = searchParams.get('code') || ''
-  const platform = searchParams.get('platform') || ''
-  console.log(code, platform)
-
+export default function LoginTest() {
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getMemberInfo({
-          platform: platform,
-          code: decodeURIComponent(code),
-          site: 'next',
-        })
-        console.log('getMemberInfo', data)
+        const data = await getMemberTest()
         setVisible(false)
+        console.log('getMemberTest', data)
 
         if (data.hasOwnProperty('accessToken')) {
           localStorage.setItem('accessToken', data.accessToken)
