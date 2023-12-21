@@ -27,7 +27,7 @@ export default function LoginTest() {
 
     setTimeout(function () {
       window.close()
-    }, 3000)
+    }, 2000)
   }, [])
 
   return <Result status="success" title="Login Successfully!" />

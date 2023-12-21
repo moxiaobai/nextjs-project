@@ -37,7 +37,7 @@ export default function Page() {
 
     setTimeout(function () {
       window.close()
-    }, 3000)
+    }, 2000)
   }, [])
 
   return <Result status="success" title="Login Successfully!" />

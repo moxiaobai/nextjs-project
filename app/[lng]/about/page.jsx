@@ -14,12 +14,20 @@ const userItems = [
   {
     key: 'github',
     label: 'Github',
-    children: 'https://github.com/moxiaobai',
+    children: (
+      <a href="https://github.com/moxiaobai" target="_blank">
+        https://github.com/moxiaobai
+      </a>
+    ),
   },
   {
     key: 'blog',
     label: 'Blog',
-    children: 'https://momobaba.top',
+    children: (
+      <a href="https://momobaba.top" target="_blank">
+        https://momobaba.top
+      </a>
+    ),
   },
 ]
 
@@ -36,11 +44,38 @@ const technicalItems = [
   },
 ]
 
+const projectItems = [
+  {
+    key: 'next',
+    label: 'Next',
+    children: (
+      <a href="https://nextjs.momobaba.top" target="_blank">
+        https://nextjs.momobaba.top
+      </a>
+    ),
+  },
+  {
+    key: 'nuxt',
+    label: 'Nuxt',
+    children: (
+      <a href="https://nuxtjs.momobaba.top" target="_blank">
+        https://nuxtjs.momobaba.top
+      </a>
+    ),
+  },
+]
+
 export default function Page() {
   return (
     <>
-      <Descriptions className="mt-8" title="User Info" items={userItems} />
-      <Descriptions title="technical ability" items={technicalItems} />
+      <div className="mb-3 mt-8">
+        <Descriptions title="User Info" items={userItems} />
+      </div>
+      <div className="mb-6 mt-8">
+        <Descriptions title="Technical Ability" items={technicalItems} />
+      </div>
+
+      <Descriptions title="Project" items={projectItems} />
     </>
   )
 }
