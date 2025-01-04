@@ -9,7 +9,7 @@ import { useTranslation } from '../../i18n/client'
 export default function Checkout({ lng }) {
   const { t } = useTranslation(lng)
 
-  const iso = 'US'
+  const iso = 'HK'
   const [channel, setChannel] = useState([])
   const [channelId, setChannelId] = useState(0)
   const [loadingChannel, setLoadingChannel] = useState(true)
